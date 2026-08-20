@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="favicon.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#07090b" />
+    <title>Sam Tsang — Medical Robotics &amp; AI Engineer</title>
+    <meta
+      name="description"
+      content="Sam Tsang — Medical Robotics and AI Engineer, MSc UCL. I build medical devices and prove they work with measurements: MR-safe surgical actuation, EMG-driven assistive wearables, surgical AI."
+    />
+    <meta property="og:title" content="Sam Tsang — Medical Robotics &amp; AI Engineer" />
+    <meta
+      property="og:description"
+      content="MSc Medical Robotics and AI, UCL. I build medical devices and prove they work with measurements."
+    />
+    <meta property="og:type" content="website" />
+    <script>
+      // Set the theme class before first paint to avoid a flash of the wrong theme.
+      // Dark is the default: only switch to light if the user chose it before,
+      // or (with no stored choice) their system explicitly prefers light.
+      (function () {
+        try {
+          var stored = localStorage.getItem('theme')
+          var prefersLight =
+            window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches
+          var isDark = stored ? stored === 'dark' : !prefersLight
+          document.documentElement.classList.toggle('dark', isDark)
+          document.documentElement.classList.toggle('light', !isDark)
+          document.documentElement.style.colorScheme = isDark ? 'dark' : 'light'
+        } catch (e) {}
+      })()
+    </script>
+    <script type="module" crossorigin src="/assets/index-Dgrbvj2v.js"></script>
+    <link rel="stylesheet" crossorigin href="/assets/index-CgoxHqDd.css">
+  </head>
+  <body>
+    <div id="root"></div>
+  </body>
+</html>
