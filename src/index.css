@@ -1,0 +1,302 @@
+@import 'tailwindcss';
+
+/* Class-based dark mode (persisted, defaults to dark — see index.html inline script) */
+@custom-variant dark (&:where(.dark, .dark *));
+
+@theme {
+  --font-sans: 'Inter', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, Helvetica,
+    Arial, sans-serif;
+  --font-mono: 'JetBrains Mono', ui-monospace, 'SFMono-Regular', 'Cascadia Mono', 'Roboto Mono',
+    Consolas, monospace;
+
+  /* Dark theme: deep space-blue base, twin accents (cyan + violet) for a gradient-mesh,
+     "premium product" read rather than a single hard instrument accent. */
+  --color-bg: #05060b;
+  --color-panel: #0c0e17;
+  --color-panel-raised: #11141f;
+  --color-line: #1e2433;
+  --color-line-soft: #151926;
+  --color-ink: #f2f4f9;
+  --color-ink-soft: #9aa3b8;
+  --color-ink-faint: #666f85;
+
+  --color-accent: #35d0ff;
+  --color-accent-soft: #35d0ff1a;
+  --color-accent-ink: #001820;
+  --color-accent-2: #8b7bff;
+
+  --radius-card: 1.375rem;
+  --radius-lg: 1.875rem;
+
+  --animate-scan: scan 2.4s linear infinite;
+
+  @keyframes scan {
+    0% {
+      transform: translateX(-100%);
+    }
+    100% {
+      transform: translateX(100%);
+    }
+  }
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Light theme overrides — same tokens, softened for a bright surface rather than lab-white */
+.light {
+  --color-bg: #f6f7fb;
+  --color-panel: #ffffff;
+  --color-panel-raised: #ffffff;
+  --color-line: #e2e6f0;
+  --color-line-soft: #edf0f6;
+  --color-ink: #0d1220;
+  --color-ink-soft: #525c72;
+  --color-ink-faint: #78829a;
+
+  --color-accent: #0f8fb8;
+  --color-accent-soft: #0f8fb814;
+  --color-accent-ink: #f0fbff;
+  --color-accent-2: #6656e0;
+}
+
+@layer base {
+  * {
+    border-color: var(--color-line);
+  }
+  html {
+    scroll-behavior: smooth;
+    color-scheme: dark;
+  }
+  html.light {
+    color-scheme: light;
+  }
+  body {
+    background-color: var(--color-bg);
+    color: var(--color-ink);
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+    font-feature-settings: 'ss01' 1, 'cv05' 1;
+  }
+  ::selection {
+    background: var(--color-accent);
+    color: var(--color-accent-ink);
+  }
+  :focus-visible {
+    outline: 2px solid var(--color-accent);
+    outline-offset: 3px;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.001ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.001ms !important;
+      scroll-behavior: auto !important;
+    }
+  }
+}
+
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+  .skip-link {
+    position: absolute;
+    left: 1rem;
+    top: -3rem;
+    z-index: 100;
+    transition: top 0.15s ease;
+  }
+  .skip-link:focus {
+    top: 1rem;
+  }
+
+  /* The shared "premium card" surface: soft rounded corners, a hairline border that's
+     barely there, and a real soft shadow instead of the old hard instrument-panel edge.
+     Dark mode gets a faint glow-shadow instead of a black drop shadow, since a black
+     shadow disappears on a near-black background. */
+  .card-surface {
+    border-radius: var(--radius-card);
+    border: 1px solid var(--color-line);
+    background: var(--color-panel);
+    box-shadow: 0 1px 0 0 color-mix(in srgb, white 4%, transparent) inset,
+      0 16px 40px -20px color-mix(in srgb, var(--color-accent) 12%, transparent),
+      0 2px 10px -4px rgba(0, 0, 0, 0.4);
+    transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.25s ease, border-color 0.25s ease;
+  }
+  .light .card-surface {
+    box-shadow: 0 1px 0 0 white inset, 0 20px 40px -24px rgba(20, 30, 60, 0.18),
+      0 2px 8px -4px rgba(20, 30, 60, 0.08);
+  }
+  .card-surface-hover:hover {
+    transform: translateY(-3px);
+    border-color: color-mix(in srgb, var(--color-accent) 45%, var(--color-line));
+    box-shadow: 0 1px 0 0 color-mix(in srgb, white 4%, transparent) inset,
+      0 22px 48px -18px color-mix(in srgb, var(--color-accent) 22%, transparent),
+      0 4px 16px -4px rgba(0, 0, 0, 0.45);
+  }
+
+  /* Soft pill badge — replaces the old hard-lined mono "eyebrow" for a friendlier,
+     product-site read. */
+  .pill-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    border-radius: 999px;
+    border: 1px solid var(--color-line);
+    background: color-mix(in srgb, var(--color-panel) 70%, transparent);
+    backdrop-filter: blur(6px);
+  }
+
+  /* Cursor-tracking accent glow, used on project/skill/contact cards. border-radius:
+     inherit keeps the glow from poking past the card's now-rounded corners. */
+  .spotlight-card {
+    position: relative;
+    isolation: isolate;
+  }
+  .spotlight-card::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    opacity: 0;
+    pointer-events: none;
+    border-radius: inherit;
+    transition: opacity 0.35s ease;
+    background: radial-gradient(
+      320px circle at var(--spot-x, 50%) var(--spot-y, 50%),
+      color-mix(in srgb, var(--color-accent) 18%, transparent),
+      transparent 72%
+    );
+  }
+  .spotlight-card:hover::before,
+  .spotlight-card:focus-within::before {
+    opacity: 1;
+  }
+
+  /* Large, soft, slow-drifting gradient blobs — the "premium template" mesh-glow
+     backdrop used behind the hero and as section accents. Two hues (cyan + violet)
+     blurred heavily so they read as atmosphere, not shapes. */
+  .mesh-glow {
+    position: absolute;
+    border-radius: 999px;
+    filter: blur(80px);
+    pointer-events: none;
+    opacity: 0.55;
+  }
+  .light .mesh-glow {
+    opacity: 0.35;
+  }
+  .mesh-drift-a {
+    animation: mesh-drift-a 18s ease-in-out infinite;
+  }
+  .mesh-drift-b {
+    animation: mesh-drift-b 22s ease-in-out infinite;
+  }
+  @keyframes mesh-drift-a {
+    0%,
+    100% {
+      transform: translate(0, 0) scale(1);
+    }
+    50% {
+      transform: translate(4%, 6%) scale(1.08);
+    }
+  }
+  @keyframes mesh-drift-b {
+    0%,
+    100% {
+      transform: translate(0, 0) scale(1);
+    }
+    50% {
+      transform: translate(-5%, -4%) scale(1.05);
+    }
+  }
+
+  /* Slow diagonal light sweep behind the hero copy — the reduced-motion block
+     above already zeroes its animation-duration for that preference. */
+  .hero-scan-sweep {
+    position: absolute;
+    inset: -20% -10%;
+    pointer-events: none;
+    background: linear-gradient(
+      100deg,
+      transparent 42%,
+      color-mix(in srgb, var(--color-accent) 8%, transparent) 49%,
+      transparent 56%
+    );
+    animation: hero-scan 9s ease-in-out infinite;
+  }
+  @keyframes hero-scan {
+    0%,
+    100% {
+      transform: translateX(-55%);
+      opacity: 0;
+    }
+    12% {
+      opacity: 1;
+    }
+    38% {
+      opacity: 1;
+    }
+    52% {
+      transform: translateX(70%);
+      opacity: 0;
+    }
+  }
+
+  /* Faint circuit/grid texture — sits behind panels and the hero for a "technology"
+     read without competing with content. Kept low-opacity on purpose. */
+  .tech-grid {
+    background-image:
+      linear-gradient(to right, color-mix(in srgb, var(--color-ink) 6%, transparent) 1px, transparent 1px),
+      linear-gradient(to bottom, color-mix(in srgb, var(--color-ink) 6%, transparent) 1px, transparent 1px);
+    background-size: 42px 42px;
+    -webkit-mask-image: linear-gradient(to bottom, black, transparent);
+    mask-image: linear-gradient(to bottom, black, transparent);
+  }
+
+  /* Grades any photo into the site's palette so real photos taken under ordinary room
+     light still read as part of one consistent, considered aesthetic. */
+  .tech-photo {
+    filter: grayscale(0.5) contrast(1.1) brightness(0.64) saturate(1.15);
+  }
+  .tech-photo-tint {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      165deg,
+      color-mix(in srgb, var(--color-accent) 20%, transparent),
+      color-mix(in srgb, var(--color-accent-2) 24%, transparent) 65%,
+      transparent 100%
+    );
+    mix-blend-mode: color;
+    pointer-events: none;
+  }
+
+  /* Slow ambient pulse for the hero image's edge glow — subtle, loops cleanly, and
+     is neutralised by the global reduced-motion rule above like every other animation. */
+  .hero-glow-pulse {
+    animation: hero-glow-pulse 6s ease-in-out infinite;
+  }
+  @keyframes hero-glow-pulse {
+    0%,
+    100% {
+      opacity: 0.5;
+    }
+    50% {
+      opacity: 0.9;
+    }
+  }
+}

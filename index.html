@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="favicon.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#05070b" />
+    <title>Sam Tsang — Medical Robotics &amp; AI Engineer</title>
+    <meta
+      name="description"
+      content="Sam Tsang — Medical Robotics and AI Engineer, MSc UCL. I build medical devices and prove they work with measurements: MR-safe surgical actuation, EMG-driven assistive wearables, surgical AI."
+    />
+    <meta property="og:title" content="Sam Tsang — Medical Robotics &amp; AI Engineer" />
+    <meta
+      property="og:description"
+      content="MSc Medical Robotics and AI, UCL. I build medical devices and prove they work with measurements."
+    />
+    <meta property="og:type" content="website" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700;14..32,800&family=JetBrains+Mono:wght@400;500;600&display=swap"
+      rel="stylesheet"
+    />
+    <script>
+      // Set the theme class before first paint to avoid a flash of the wrong theme.
+      // Dark is the default: only switch to light if the user chose it before,
+      // or (with no stored choice) their system explicitly prefers light.
+      (function () {
+        try {
+          var stored = localStorage.getItem('theme')
+          var prefersLight =
+            window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches
+          var isDark = stored ? stored === 'dark' : !prefersLight
+          document.documentElement.classList.toggle('dark', isDark)
+          document.documentElement.classList.toggle('light', !isDark)
+          document.documentElement.style.colorScheme = isDark ? 'dark' : 'light'
+        } catch (e) {}
+      })()
+    </script>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>
