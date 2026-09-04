@@ -24,14 +24,12 @@
     />
     <script>
       // Set the theme class before first paint to avoid a flash of the wrong theme.
-      // Dark is the default: only switch to light if the user chose it before,
-      // or (with no stored choice) their system explicitly prefers light.
+      // Dark is always the default on first visit, regardless of system preference —
+      // it only switches to light if the visitor explicitly toggled it before.
       (function () {
         try {
           var stored = localStorage.getItem('theme')
-          var prefersLight =
-            window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches
-          var isDark = stored ? stored === 'dark' : !prefersLight
+          var isDark = stored !== 'light'
           document.documentElement.classList.toggle('dark', isDark)
           document.documentElement.classList.toggle('light', !isDark)
           document.documentElement.style.colorScheme = isDark ? 'dark' : 'light'

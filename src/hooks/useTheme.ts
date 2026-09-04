@@ -8,10 +8,10 @@ function readInitialTheme(): Theme {
 }
 
 /**
- * Theme is dark by default. A stored choice in localStorage always wins;
- * with no stored choice, `prefers-color-scheme` is respected on first visit
- * (both handled by the inline script in index.html to avoid a flash — this
- * hook just picks up whatever class is already on <html> and keeps it synced).
+ * Theme is dark by default, regardless of system preference. A stored choice
+ * in localStorage always wins (handled by the inline script in index.html to
+ * avoid a flash — this hook just picks up whatever class is already on
+ * <html> and keeps it synced).
  */
 export function useTheme() {
   const [theme, setThemeState] = useState<Theme>(readInitialTheme)

@@ -31,7 +31,7 @@ export const highlights = [
   },
   {
     title: 'Found the real bottleneck by measuring',
-    body: "Instrumented a pneumatic circuit stage by stage and traced a hidden loss straight to the valve causing it — not the part everyone assumed.",
+    body: "Instrumented a pneumatic circuit stage by stage and found 27% of the regulated supply lost at the valve stage — not the part everyone assumed.",
   },
 ]
 
@@ -42,7 +42,7 @@ export const approachPrinciples = [
   },
   {
     title: 'Find the real bottleneck, not the obvious one.',
-    body: 'I assumed the rolling diaphragm would dominate the losses in my actuator. Systematic pressure mapping around the circuit showed it was actually the solenoid valve, losing a meaningful chunk of pressure entirely on its own. That single measurement changed what the next revision had to fix.',
+    body: 'I assumed the rolling diaphragm would dominate the losses in my actuator. Systematic pressure mapping across every stage of the circuit showed it was actually the valve stage — 27% of the regulated supply gone there alone, a property of that valve type, not one faulty part. That measurement changed what the next revision had to fix.',
   },
   {
     title: 'Failure modes are the interesting result.',
